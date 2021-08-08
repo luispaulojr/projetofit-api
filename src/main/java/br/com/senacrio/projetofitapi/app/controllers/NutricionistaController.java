@@ -110,7 +110,8 @@ public class NutricionistaController {
     }
 
     private Nutricionista convertNutricionista(NutricionistaDTO nutricionistaDTO, Optional<Long> id) {
-        return Nutricionista.builder()
+
+        var nutricionista = Nutricionista.builder()
                 .id(id.orElse(null))
                 .nome(nutricionistaDTO.getNome())
                 .login(nutricionistaDTO.getLogin())
@@ -121,13 +122,16 @@ public class NutricionistaController {
                 .status(nutricionistaDTO.getStatus())
                 .dataNascimento(nutricionistaDTO.getDataNascimento())
                 .crn(nutricionistaDTO.getCrn())
-                .consultorio(
+                .endereco(
                         Endereco.builder()
-                                .id(id.isPresent() ? repository.findByConsultorioId(id.get()).getId() : null)
+                                .id((id.isPresent() ? repository.findIdConsultorioByNutricionista(id.get()) : null))
                                 .logradouro(nutricionistaDTO.getConsultorio().getLogradouro())
                                 .bairro(nutricionistaDTO.getConsultorio().getBairro())
                                 .cidade(nutricionistaDTO.getConsultorio().getCidade())
                                 .build())
                 .build();
+        System.out.println(nutricionista);
+
+        return nutricionista;
     }
 }

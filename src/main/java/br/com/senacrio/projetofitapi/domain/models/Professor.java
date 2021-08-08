@@ -19,11 +19,11 @@ import java.io.Serializable;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 @PrimaryKeyJoinColumn(name = "usuario_id")
-public class Nutricionista extends Usuario implements Serializable {
+public class Professor extends Usuario implements Serializable {
 
-    private String crn;
+    private String cref;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "endereco_id")
-    private Endereco endereco;
+    @JoinColumn(name = "academia_id")
+    private Academia academiaFiliada;
 }

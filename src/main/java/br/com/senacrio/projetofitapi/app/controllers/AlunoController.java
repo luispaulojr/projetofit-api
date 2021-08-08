@@ -1,5 +1,6 @@
 package br.com.senacrio.projetofitapi.app.controllers;
 
+import br.com.senacrio.projetofitapi.config.ExceptionHandlers;
 import br.com.senacrio.projetofitapi.domain.dtos.AlunoDTO;
 import br.com.senacrio.projetofitapi.domain.models.Aluno;
 import br.com.senacrio.projetofitapi.gateway.repositories.AlunoRepository;
@@ -52,7 +53,7 @@ public class AlunoController {
     public ResponseEntity<Aluno> getAlunoById(@PathVariable("id") Long id) {
 
         Optional<Aluno> aluno = repository.findById(id);
-        return aluno.isPresent() ? new ResponseEntity<>(aluno.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return aluno.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
@@ -71,10 +72,7 @@ public class AlunoController {
         try {
             savedAluno = repository.save(aluno);
         } catch (Exception e) {
-            if (e.getMessage().contains("ConstraintViolationException"))
-                return new ResponseEntity<>(HttpStatus.CONFLICT);
-            else
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ExceptionHandlers.trataException(e.getMessage());
         }
 
         return new ResponseEntity<>(savedAluno, httpHeaders, HttpStatus.CREATED);
@@ -100,7 +98,7 @@ public class AlunoController {
             @ApiResponse(description = "Aluno não localizado", responseCode = "404", content = @Content)
     })
     public ResponseEntity<Aluno> updateAluno(@PathVariable("id") long id, @RequestBody AlunoDTO alunoDTO) {
-        boolean isAlunoPresent = repository.existsById(Long.valueOf(id));
+        boolean isAlunoPresent = repository.existsById(id);
 
         if (!isAlunoPresent) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -112,7 +110,7 @@ public class AlunoController {
 
     private Aluno convertAluno(AlunoDTO alunoDTO, Optional<Long> id) {
         return Aluno.builder()
-                .id(id.isPresent() ? id.get() : null)
+                .id(id.orElse(null))
                 .nome(alunoDTO.getNome())
                 .login(alunoDTO.getLogin())
                 .senha(alunoDTO.getSenha())

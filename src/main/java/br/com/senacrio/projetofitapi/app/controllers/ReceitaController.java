@@ -3,7 +3,7 @@ package br.com.senacrio.projetofitapi.app.controllers;
 import br.com.senacrio.projetofitapi.config.ExceptionHandlers;
 import br.com.senacrio.projetofitapi.domain.dtos.ReceitaDTO;
 import br.com.senacrio.projetofitapi.domain.models.Receita;
-import br.com.senacrio.projetofitapi.gateway.converts.ReceitaConvert;
+import br.com.senacrio.projetofitapi.gateway.converters.ReceitaConverter;
 import br.com.senacrio.projetofitapi.gateway.repositories.ReceitaRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -54,6 +54,7 @@ public class ReceitaController {
     public ResponseEntity<Receita> getReceitaById(@PathVariable("id") Long id) {
 
         Optional<Receita> receita = repository.findById(id);
+
         return receita.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
@@ -65,7 +66,10 @@ public class ReceitaController {
             @ApiResponse(description = "Falha do sistema", responseCode = "500", content = @Content)
     })
     public ResponseEntity<Receita> addReceita(@RequestBody @Valid ReceitaDTO receitaDTO) {
-        var receita = ReceitaConvert.convertReceitaRequest(receitaDTO);
+        var receita = ReceitaConverter.toReceitaRequest(receitaDTO);
+
+        receita.setNutricionista(repository.findNutricionistaById(receitaDTO.getNutricionistaId()));
+
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(linkTo(ReceitaController.class).slash(receita.getId())
                 .toUri());
@@ -91,7 +95,8 @@ public class ReceitaController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         receitaDTO.setId(id);
-        Receita updatedReceita = repository.save(ReceitaConvert.convertReceitaUpdateRequest(receitaDTO));
+
+        Receita updatedReceita = repository.save(ReceitaConverter.toReceitaUpdateRequest(receitaDTO));
 
         return new ResponseEntity<>(updatedReceita, HttpStatus.OK);
     }

@@ -1,12 +1,12 @@
-package br.com.senacrio.projetofitapi.gateway.converts;
+package br.com.senacrio.projetofitapi.gateway.converters;
 
 import br.com.senacrio.projetofitapi.domain.dtos.NutricionistaDTO;
 import br.com.senacrio.projetofitapi.domain.models.Endereco;
 import br.com.senacrio.projetofitapi.domain.models.Nutricionista;
 
-public class NutricionistaConvert {
+public class NutricionistaConverter {
 
-    public static Nutricionista convertNutricionistaRequest(NutricionistaDTO dto) {
+    public static Nutricionista toNutricionistaRequest(NutricionistaDTO dto) {
 
         var nutricionista = Nutricionista.builder()
                 .nome(dto.getNome())
@@ -30,7 +30,7 @@ public class NutricionistaConvert {
         return nutricionista;
     }
 
-    public static Nutricionista convertNutricionistaUpdateRequest(NutricionistaDTO dto) {
+    public static Nutricionista toNutricionistaUpdateRequest(NutricionistaDTO dto) {
 
         var nutricionista = Nutricionista.builder()
                 .id(dto.getId())

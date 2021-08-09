@@ -3,7 +3,7 @@ package br.com.senacrio.projetofitapi.app.controllers;
 import br.com.senacrio.projetofitapi.config.ExceptionHandlers;
 import br.com.senacrio.projetofitapi.domain.dtos.NutricionistaDTO;
 import br.com.senacrio.projetofitapi.domain.models.Nutricionista;
-import br.com.senacrio.projetofitapi.gateway.converts.NutricionistaConvert;
+import br.com.senacrio.projetofitapi.gateway.converters.NutricionistaConverter;
 import br.com.senacrio.projetofitapi.gateway.repositories.NutricionistaRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -65,7 +65,7 @@ public class NutricionistaController {
             @ApiResponse(description = "Falha do sistema", responseCode = "500", content = @Content)
     })
     public ResponseEntity<Nutricionista> addNutricionista(@RequestBody @Valid NutricionistaDTO nutricionistaDTO) {
-        var nutricionista = NutricionistaConvert.convertNutricionistaRequest(nutricionistaDTO);
+        var nutricionista = NutricionistaConverter.toNutricionistaRequest(nutricionistaDTO);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(linkTo(NutricionistaController.class).slash(nutricionista.getId())
                 .toUri());
@@ -92,7 +92,7 @@ public class NutricionistaController {
         }
         nutricionistaDTO.setId(id);
         nutricionistaDTO.getConsultorio().setId(repository.findIdConsultorioByNutricionista(id));
-        Nutricionista updatedNutricionista = repository.save(NutricionistaConvert.convertNutricionistaUpdateRequest(nutricionistaDTO));
+        Nutricionista updatedNutricionista = repository.save(NutricionistaConverter.toNutricionistaUpdateRequest(nutricionistaDTO));
 
         return new ResponseEntity<>(updatedNutricionista, HttpStatus.OK);
     }

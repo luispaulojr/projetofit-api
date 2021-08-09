@@ -11,28 +11,26 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Entity
-public class Receita {
+public class Consultorio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String nome;
-
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String objetivo;
+    @OneToOne
+    @JoinColumn(name = "nutricionista_id", foreignKey = @ForeignKey(name = "fk_aluno_id"))
+    private Aluno aluno;
 
     @Column(nullable = false)
-    @Singular
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ingrediente_id", foreignKey = @ForeignKey(name = "fk_ingrediente_id"))
-    private List<Ingrediente> ingredientes;
-
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String preparo;
-
     @OneToOne
     @JoinColumn(name = "nutricionista_id", foreignKey = @ForeignKey(name = "fk_nutricionista_id"))
     private Nutricionista nutricionista;
+
+
+    @Column(nullable = false)
+    @Singular("SerieDeExercicios")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ingrediente_id", foreignKey = @ForeignKey(name = "fk_serieDeExercicios_id"))
+    private List<SerieDeExercicios> serieDeExerciciosList;
 }

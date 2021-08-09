@@ -1,12 +1,12 @@
-package br.com.senacrio.projetofitapi.gateway.converts;
+package br.com.senacrio.projetofitapi.gateway.converters;
 
 import br.com.senacrio.projetofitapi.domain.dtos.ProfessorDTO;
 import br.com.senacrio.projetofitapi.domain.models.Academia;
 import br.com.senacrio.projetofitapi.domain.models.Endereco;
 import br.com.senacrio.projetofitapi.domain.models.Professor;
 
-public class ProfessorConvert {
-    public static Professor convertProfessorRequest(ProfessorDTO dto) {
+public class ProfessorConverter {
+    public static Professor toProfessorRequest(ProfessorDTO dto) {
 
         return Professor.builder()
                 .nome(dto.getNome())
@@ -30,7 +30,7 @@ public class ProfessorConvert {
                 .build();
     }
 
-    public static Professor convertProfessorUpdateRequest(ProfessorDTO dto) {
+    public static Professor toProfessorUpdateRequest(ProfessorDTO dto) {
 
         return Professor.builder()
                 .id(dto.getId())

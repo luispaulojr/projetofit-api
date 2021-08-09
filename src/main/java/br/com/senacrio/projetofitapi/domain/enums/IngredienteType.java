@@ -6,5 +6,7 @@ public enum IngredienteType {
     QUILOGRAMA,
     MILILITRO,
     COLHER,
-    XICARA
+    XICARA,
+    FOLHA,
+    UNIDADE
 }

@@ -1,13 +1,11 @@
 package br.com.senacrio.projetofitapi.domain.models;
 
 import br.com.senacrio.projetofitapi.domain.enums.IngredienteType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
+@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

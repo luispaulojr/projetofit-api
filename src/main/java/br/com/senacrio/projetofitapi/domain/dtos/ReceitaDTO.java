@@ -20,10 +20,10 @@ public class ReceitaDTO {
     private Long id;
 
     @NotBlank(message = "Valor é obrigatório!")
-    private String objetivo;
+    private String nome;
 
     @NotBlank(message = "Valor é obrigatório!")
-    private String nome;
+    private String objetivo;
 
     @NotNull(message = "Valor é obrigatório!")
     private List<IngredienteDTO> ingredientes;

@@ -3,7 +3,7 @@ package br.com.senacrio.projetofitapi.app.controllers;
 import br.com.senacrio.projetofitapi.config.ExceptionHandlers;
 import br.com.senacrio.projetofitapi.domain.dtos.SerieDeExerciciosDTO;
 import br.com.senacrio.projetofitapi.domain.models.SerieDeExercicios;
-import br.com.senacrio.projetofitapi.gateway.converts.SerieDeExerciciosConvert;
+import br.com.senacrio.projetofitapi.gateway.converters.SerieDeExerciciosConverter;
 import br.com.senacrio.projetofitapi.gateway.repositories.SerieDeExerciciosRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -65,7 +65,10 @@ public class SerieDeExerciciosController {
             @ApiResponse(description = "Falha do sistema", responseCode = "500", content = @Content)
     })
     public ResponseEntity<SerieDeExercicios> addSerieDeExercicios(@RequestBody @Valid SerieDeExerciciosDTO serieDeExerciciosDTO) {
-        var serieDeExercicios = SerieDeExerciciosConvert.convertSerieDeExerciciosRequest(serieDeExerciciosDTO);
+        var serieDeExercicios = SerieDeExerciciosConverter.toSerieDeExerciciosRequest(serieDeExerciciosDTO);
+
+        serieDeExercicios.setProfessor(repository.findProfessorById(serieDeExerciciosDTO.getProfessorId()));
+
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(linkTo(SerieDeExerciciosController.class).slash(serieDeExercicios.getId())
                 .toUri());
@@ -91,7 +94,9 @@ public class SerieDeExerciciosController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        SerieDeExercicios updatedSerieDeExercicios = repository.save(SerieDeExerciciosConvert.convertSerieDeExerciciosUpdateRequest(serieDeExerciciosDTO));
+        serieDeExerciciosDTO.setId(id);
+
+        SerieDeExercicios updatedSerieDeExercicios = repository.save(SerieDeExerciciosConverter.toSerieDeExerciciosUpdateRequest(serieDeExerciciosDTO));
 
         return new ResponseEntity<>(updatedSerieDeExercicios, HttpStatus.OK);
     }

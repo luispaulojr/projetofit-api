@@ -3,7 +3,7 @@ package br.com.senacrio.projetofitapi.app.controllers;
 import br.com.senacrio.projetofitapi.config.ExceptionHandlers;
 import br.com.senacrio.projetofitapi.domain.dtos.ProfessorDTO;
 import br.com.senacrio.projetofitapi.domain.models.Professor;
-import br.com.senacrio.projetofitapi.gateway.converts.ProfessorConvert;
+import br.com.senacrio.projetofitapi.gateway.converters.ProfessorConverter;
 import br.com.senacrio.projetofitapi.gateway.repositories.ProfessorRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -65,7 +65,7 @@ public class ProfessorController {
             @ApiResponse(description = "Falha do sistema", responseCode = "500", content = @Content)
     })
     public ResponseEntity<Professor> addProfessor(@RequestBody @Valid ProfessorDTO professorDTO) {
-        var professor = ProfessorConvert.convertProfessorRequest(professorDTO);
+        var professor = ProfessorConverter.toProfessorRequest(professorDTO);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(linkTo(ProfessorController.class).slash(professor.getId())
                 .toUri());
@@ -96,7 +96,7 @@ public class ProfessorController {
         professorDTO.setId(id);
         professorDTO.getAcademiaFiliada().setId(academia.getId());
         professorDTO.getAcademiaFiliada().getEndereco().setId(academia.getEndereco().getId());
-        Professor updatedProfessor = repository.save(ProfessorConvert.convertProfessorUpdateRequest(professorDTO));
+        Professor updatedProfessor = repository.save(ProfessorConverter.toProfessorUpdateRequest(professorDTO));
 
         return new ResponseEntity<>(updatedProfessor, HttpStatus.OK);
     }

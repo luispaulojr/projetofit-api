@@ -3,7 +3,7 @@ package br.com.senacrio.projetofitapi.app.controllers;
 import br.com.senacrio.projetofitapi.config.ExceptionHandlers;
 import br.com.senacrio.projetofitapi.domain.dtos.AlunoDTO;
 import br.com.senacrio.projetofitapi.domain.models.Aluno;
-import br.com.senacrio.projetofitapi.gateway.converts.AlunoConvert;
+import br.com.senacrio.projetofitapi.gateway.converters.AlunoConverter;
 import br.com.senacrio.projetofitapi.gateway.repositories.AlunoRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -65,7 +65,7 @@ public class AlunoController {
             @ApiResponse(description = "Falha do sistema", responseCode = "500", content = @Content)
     })
     public ResponseEntity<Aluno> addAluno(@RequestBody @Valid AlunoDTO alunoDTO) {
-        var aluno = AlunoConvert.convertAlunoRequest(alunoDTO);
+        var aluno = AlunoConverter.toAlunoRequest(alunoDTO);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(linkTo(AlunoController.class).slash(aluno.getId())
                 .toUri());
@@ -91,7 +91,7 @@ public class AlunoController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         alunoDTO.setId(id);
-        Aluno updatedAluno = repository.save(AlunoConvert.convertAlunoUpdateRequest(alunoDTO));
+        Aluno updatedAluno = repository.save(AlunoConverter.toAlunoUpdateRequest(alunoDTO));
 
         return new ResponseEntity<>(updatedAluno, HttpStatus.OK);
     }

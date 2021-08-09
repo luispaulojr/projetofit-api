@@ -11,6 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
+@ToString
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,7 +20,6 @@ import java.time.LocalDate;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Usuario {
 
-    @NonNull
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

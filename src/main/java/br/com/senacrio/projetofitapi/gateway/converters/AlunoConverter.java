@@ -1,10 +1,10 @@
-package br.com.senacrio.projetofitapi.gateway.converts;
+package br.com.senacrio.projetofitapi.gateway.converters;
 
 import br.com.senacrio.projetofitapi.domain.dtos.AlunoDTO;
 import br.com.senacrio.projetofitapi.domain.models.Aluno;
 
-public class AlunoConvert {
-    public static Aluno convertAlunoRequest(AlunoDTO dto) {
+public class AlunoConverter {
+    public static Aluno toAlunoRequest(AlunoDTO dto) {
         return Aluno.builder()
                 .nome(dto.getNome())
                 .login(dto.getLogin())
@@ -20,7 +20,7 @@ public class AlunoConvert {
                 .build();
     }
 
-    public static Aluno convertAlunoUpdateRequest(AlunoDTO dto) {
+    public static Aluno toAlunoUpdateRequest(AlunoDTO dto) {
         return Aluno.builder()
                 .id(dto.getId())
                 .nome(dto.getNome())

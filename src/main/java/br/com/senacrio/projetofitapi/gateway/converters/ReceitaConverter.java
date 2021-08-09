@@ -1,14 +1,14 @@
-package br.com.senacrio.projetofitapi.gateway.converts;
+package br.com.senacrio.projetofitapi.gateway.converters;
 
 import br.com.senacrio.projetofitapi.domain.dtos.ReceitaDTO;
 import br.com.senacrio.projetofitapi.domain.models.Nutricionista;
 import br.com.senacrio.projetofitapi.domain.models.Receita;
 
-public class ReceitaConvert {
+public class ReceitaConverter {
 
-    public static Receita convertReceitaRequest(ReceitaDTO dto) {
+    public static Receita toReceitaRequest(ReceitaDTO dto) {
 
-        var ingredientes = dto.getIngredientes().stream().map(ingredienteDTO -> IngredienteConvert.convertIngredienteRequest(ingredienteDTO)).toList();
+        var ingredientes = dto.getIngredientes().stream().map(ingredienteDTO -> IngredienteConverter.toIngredienteRequest(ingredienteDTO)).toList();
 
         return Receita.builder()
                 .nome(dto.getNome())
@@ -19,9 +19,9 @@ public class ReceitaConvert {
                 .build();
     }
 
-    public static Receita convertReceitaUpdateRequest(ReceitaDTO dto) {
+    public static Receita toReceitaUpdateRequest(ReceitaDTO dto) {
 
-        var ingredientes = dto.getIngredientes().stream().map(ingredienteDTO -> IngredienteConvert.convertIngredienteRequest(ingredienteDTO)).toList();
+        var ingredientes = dto.getIngredientes().stream().map(ingredienteDTO -> IngredienteConverter.toIngredienteUpdateRequest(ingredienteDTO)).toList();
 
         return Receita.builder()
                 .id(dto.getId())

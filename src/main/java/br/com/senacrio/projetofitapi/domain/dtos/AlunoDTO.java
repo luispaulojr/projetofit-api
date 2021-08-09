@@ -3,10 +3,7 @@ package br.com.senacrio.projetofitapi.domain.dtos;
 import br.com.senacrio.projetofitapi.domain.enums.UserStatus;
 import br.com.senacrio.projetofitapi.domain.enums.UserType;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.EnumType;
@@ -16,6 +13,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import java.time.LocalDate;
 
+@Builder
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor

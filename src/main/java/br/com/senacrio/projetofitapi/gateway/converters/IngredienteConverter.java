@@ -1,10 +1,10 @@
-package br.com.senacrio.projetofitapi.gateway.converts;
+package br.com.senacrio.projetofitapi.gateway.converters;
 
 import br.com.senacrio.projetofitapi.domain.dtos.IngredienteDTO;
 import br.com.senacrio.projetofitapi.domain.models.Ingrediente;
 
-public class IngredienteConvert {
-    public static Ingrediente convertIngredienteRequest(IngredienteDTO dto) {
+public class IngredienteConverter {
+    public static Ingrediente toIngredienteRequest(IngredienteDTO dto) {
         return Ingrediente.builder()
                 .nome(dto.getNome())
                 .quantidade(dto.getQuantidade())
@@ -13,7 +13,7 @@ public class IngredienteConvert {
                 .build();
     }
 
-    public static Ingrediente convertIngredienteUpdateRequest(IngredienteDTO dto) {
+    public static Ingrediente toIngredienteUpdateRequest(IngredienteDTO dto) {
         return Ingrediente.builder()
                 .id(dto.getId())
                 .nome(dto.getNome())

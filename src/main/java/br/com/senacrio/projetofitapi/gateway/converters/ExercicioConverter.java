@@ -1,13 +1,13 @@
-package br.com.senacrio.projetofitapi.gateway.converts;
+package br.com.senacrio.projetofitapi.gateway.converters;
 
 import br.com.senacrio.projetofitapi.domain.dtos.ExercicioDTO;
 import br.com.senacrio.projetofitapi.domain.models.Exercicio;
 
-public class ExercicioConvert {
+public class ExercicioConverter {
 
-    public static Exercicio convertExercicioRequest(ExercicioDTO dto) {
+    public static Exercicio toExercicioRequest(ExercicioDTO dto) {
         var fotos = dto.getFotos().stream().map(
-                fotoDTO -> FotoConvert.convertFotoRequest(fotoDTO)).toList();
+                fotoDTO -> FotoConverter.toFotoRequest(fotoDTO)).toList();
 
         return Exercicio.builder()
                 .nome(dto.getNome())
@@ -17,9 +17,9 @@ public class ExercicioConvert {
                 .build();
     }
 
-    public static Exercicio convertExercicioUpdateRequest(ExercicioDTO dto) {
+    public static Exercicio toExercicioUpdateRequest(ExercicioDTO dto) {
         var fotos = dto.getFotos().stream().map(
-                fotoDTO -> FotoConvert.convertFotoUpdateRequest(fotoDTO)).toList();
+                fotoDTO -> FotoConverter.toFotoUpdateRequest(fotoDTO)).toList();
 
         return Exercicio.builder()
                 .id(dto.getId())

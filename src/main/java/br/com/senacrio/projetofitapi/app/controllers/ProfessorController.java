@@ -65,7 +65,9 @@ public class ProfessorController {
             @ApiResponse(description = "Falha do sistema", responseCode = "500", content = @Content)
     })
     public ResponseEntity<Professor> addProfessor(@RequestBody @Valid ProfessorDTO professorDTO) {
+
         var professor = ProfessorConverter.toProfessorRequest(professorDTO);
+
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(linkTo(ProfessorController.class).slash(professor.getId())
                 .toUri());

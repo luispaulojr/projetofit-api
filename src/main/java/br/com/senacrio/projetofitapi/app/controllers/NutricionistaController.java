@@ -65,7 +65,9 @@ public class NutricionistaController {
             @ApiResponse(description = "Falha do sistema", responseCode = "500", content = @Content)
     })
     public ResponseEntity<Nutricionista> addNutricionista(@RequestBody @Valid NutricionistaDTO nutricionistaDTO) {
+
         var nutricionista = NutricionistaConverter.toNutricionistaRequest(nutricionistaDTO);
+
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(linkTo(NutricionistaController.class).slash(nutricionista.getId())
                 .toUri());
@@ -90,8 +92,10 @@ public class NutricionistaController {
         if (!isNutricionistaPresent) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
         nutricionistaDTO.setId(id);
         nutricionistaDTO.getConsultorio().setId(repository.findIdConsultorioByNutricionista(id));
+
         Nutricionista updatedNutricionista = repository.save(NutricionistaConverter.toNutricionistaUpdateRequest(nutricionistaDTO));
 
         return new ResponseEntity<>(updatedNutricionista, HttpStatus.OK);

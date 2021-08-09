@@ -65,9 +65,8 @@ public class SerieDeExerciciosController {
             @ApiResponse(description = "Falha do sistema", responseCode = "500", content = @Content)
     })
     public ResponseEntity<SerieDeExercicios> addSerieDeExercicios(@RequestBody @Valid SerieDeExerciciosDTO serieDeExerciciosDTO) {
-        var serieDeExercicios = SerieDeExerciciosConverter.toSerieDeExerciciosRequest(serieDeExerciciosDTO);
 
-        serieDeExercicios.setProfessor(repository.findProfessorById(serieDeExerciciosDTO.getProfessorId()));
+        var serieDeExercicios = SerieDeExerciciosConverter.toSerieDeExerciciosRequest(serieDeExerciciosDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(linkTo(SerieDeExerciciosController.class).slash(serieDeExercicios.getId())

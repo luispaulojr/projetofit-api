@@ -17,12 +17,10 @@ public class Treino {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     @OneToOne
-    @JoinColumn(name = "nutricionista_id", foreignKey = @ForeignKey(name = "fk_aluno_id"))
+    @JoinColumn(name = "aluno_id", foreignKey = @ForeignKey(name = "fk_aluno_id"))
     private Aluno aluno;
 
-    @Column(nullable = false)
     @OneToOne
     @JoinColumn(name = "professor_id", foreignKey = @ForeignKey(name = "fk_professor_id"))
     private Professor professor;
@@ -30,7 +28,7 @@ public class Treino {
 
     @Column(nullable = false)
     @Singular("SerieDeExercicios")
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "Receita_id", foreignKey = @ForeignKey(name = "fk_Receita_id"))
-    private List<Receita> receitas;
+    @OneToMany
+    @JoinColumn(name = "serieDeExerciciosList_id", foreignKey = @ForeignKey(name = "fk_serie_de_exercicios_id"))
+    private List<SerieDeExercicios> serieDeExerciciosList;
 }

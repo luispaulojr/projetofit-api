@@ -65,11 +65,15 @@ public class AlunoController {
             @ApiResponse(description = "Falha do sistema", responseCode = "500", content = @Content)
     })
     public ResponseEntity<Aluno> addAluno(@RequestBody @Valid AlunoDTO alunoDTO) {
+
         var aluno = AlunoConverter.toAlunoRequest(alunoDTO);
+
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(linkTo(AlunoController.class).slash(aluno.getId())
                 .toUri());
+
         Aluno savedAluno;
+
         try {
             savedAluno = repository.save(aluno);
         } catch (Exception e) {

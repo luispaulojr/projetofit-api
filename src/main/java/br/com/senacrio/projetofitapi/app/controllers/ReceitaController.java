@@ -66,9 +66,8 @@ public class ReceitaController {
             @ApiResponse(description = "Falha do sistema", responseCode = "500", content = @Content)
     })
     public ResponseEntity<Receita> addReceita(@RequestBody @Valid ReceitaDTO receitaDTO) {
-        var receita = ReceitaConverter.toReceitaRequest(receitaDTO);
 
-        receita.setNutricionista(repository.findNutricionistaById(receitaDTO.getNutricionistaId()));
+        var receita = ReceitaConverter.toReceitaRequest(receitaDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(linkTo(ReceitaController.class).slash(receita.getId())
@@ -94,6 +93,7 @@ public class ReceitaController {
         if (!isReceitaPresent) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
         receitaDTO.setId(id);
 
         Receita updatedReceita = repository.save(ReceitaConverter.toReceitaUpdateRequest(receitaDTO));

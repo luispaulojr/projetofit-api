@@ -7,7 +7,7 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
-@ToString
+@ToString(callSuper=true, includeFieldNames=true)
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor

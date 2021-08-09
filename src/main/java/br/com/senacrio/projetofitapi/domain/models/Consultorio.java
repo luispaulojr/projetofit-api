@@ -17,20 +17,18 @@ public class Consultorio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     @OneToOne
-    @JoinColumn(name = "nutricionista_id", foreignKey = @ForeignKey(name = "fk_aluno_id"))
+    @JoinColumn(name = "aluno_id", foreignKey = @ForeignKey(name = "fk_aluno_id"))
     private Aluno aluno;
 
-    @Column(nullable = false)
     @OneToOne
     @JoinColumn(name = "nutricionista_id", foreignKey = @ForeignKey(name = "fk_nutricionista_id"))
     private Nutricionista nutricionista;
 
 
     @Column(nullable = false)
-    @Singular("SerieDeExercicios")
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ingrediente_id", foreignKey = @ForeignKey(name = "fk_serieDeExercicios_id"))
-    private List<SerieDeExercicios> serieDeExerciciosList;
+    @Singular()
+    @OneToMany
+    @JoinColumn(name = "Receita_id", foreignKey = @ForeignKey(name = "fk_receita_id"))
+    private List<Receita> receitas;
 }

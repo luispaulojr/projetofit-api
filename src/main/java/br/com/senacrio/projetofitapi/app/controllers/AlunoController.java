@@ -3,6 +3,7 @@ package br.com.senacrio.projetofitapi.app.controllers;
 import br.com.senacrio.projetofitapi.config.ExceptionHandlers;
 import br.com.senacrio.projetofitapi.domain.dtos.AlunoDTO;
 import br.com.senacrio.projetofitapi.domain.models.Aluno;
+import br.com.senacrio.projetofitapi.gateway.converts.AlunoConvert;
 import br.com.senacrio.projetofitapi.gateway.repositories.AlunoRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -64,7 +65,7 @@ public class AlunoController {
             @ApiResponse(description = "Falha do sistema", responseCode = "500", content = @Content)
     })
     public ResponseEntity<Aluno> addAluno(@RequestBody @Valid AlunoDTO alunoDTO) {
-        var aluno = convertAluno(alunoDTO, Optional.empty());
+        var aluno = AlunoConvert.convertAlunoRequest(alunoDTO);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(linkTo(AlunoController.class).slash(aluno.getId())
                 .toUri());
@@ -78,20 +79,6 @@ public class AlunoController {
         return new ResponseEntity<>(savedAluno, httpHeaders, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Cadastra aluno", responses = {
-            @ApiResponse(description = "Sucesso ao excluir o aluno", responseCode = "204", content = @Content),
-            @ApiResponse(description = "Falha ao excluir o aluno", responseCode = "400", content = @Content)
-    })
-    public ResponseEntity<Void> deleteAluno(@PathVariable("id") long id) {
-        try {
-            repository.deleteById(id);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
     @PutMapping("/{id}")
     @Operation(summary = "Atualiza um aluno pelo id", responses = {
             @ApiResponse(description = "Sucesso ao atualizar do aluno", responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Aluno.class))),
@@ -103,25 +90,23 @@ public class AlunoController {
         if (!isAlunoPresent) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        Aluno updatedAluno = repository.save(convertAluno(alunoDTO, Optional.of(id)));
+        alunoDTO.setId(id);
+        Aluno updatedAluno = repository.save(AlunoConvert.convertAlunoUpdateRequest(alunoDTO));
 
         return new ResponseEntity<>(updatedAluno, HttpStatus.OK);
     }
 
-    private Aluno convertAluno(AlunoDTO alunoDTO, Optional<Long> id) {
-        return Aluno.builder()
-                .id(id.orElse(null))
-                .nome(alunoDTO.getNome())
-                .login(alunoDTO.getLogin())
-                .senha(alunoDTO.getSenha())
-                .email(alunoDTO.getEmail())
-                .telefone(alunoDTO.getTelefone())
-                .tipo(alunoDTO.getTipo())
-                .status(alunoDTO.getStatus())
-                .dataNascimento(alunoDTO.getDataNascimento())
-                .altura(alunoDTO.getAltura())
-                .peso(alunoDTO.getPeso())
-                .circAbdominal(alunoDTO.getCircAbdominal())
-                .build();
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Apaga aluno", responses = {
+            @ApiResponse(description = "Sucesso ao excluir o aluno", responseCode = "204", content = @Content),
+            @ApiResponse(description = "Falha ao excluir o aluno", responseCode = "400", content = @Content)
+    })
+    public ResponseEntity<Void> deleteAluno(@PathVariable("id") long id) {
+        try {
+            repository.deleteById(id);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

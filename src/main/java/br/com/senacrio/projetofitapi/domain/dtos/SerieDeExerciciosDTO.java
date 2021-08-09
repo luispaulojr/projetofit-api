@@ -1,6 +1,5 @@
 package br.com.senacrio.projetofitapi.domain.dtos;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,23 +8,20 @@ import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class AcademiaDTO {
+public class SerieDeExerciciosDTO {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long id;
 
     @NotBlank(message = "Valor é obrigatório!")
-    private String razaoSocial;
-
-    @NotBlank(message = "Valor é obrigatório!")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String cpnj;
+    private String nome;
 
     @NotNull(message = "Valor é obrigatório!")
-    private EnderecoDTO endereco;
+    private List<ExercicioDTO> exercicios;
 }

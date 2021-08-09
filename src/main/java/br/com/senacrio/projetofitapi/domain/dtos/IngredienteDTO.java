@@ -1,6 +1,6 @@
 package br.com.senacrio.projetofitapi.domain.dtos;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import br.com.senacrio.projetofitapi.domain.enums.IngredienteType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,18 +14,20 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class AcademiaDTO {
+public class IngredienteDTO {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long id;
 
     @NotBlank(message = "Valor é obrigatório!")
-    private String razaoSocial;
-
-    @NotBlank(message = "Valor é obrigatório!")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String cpnj;
+    private String nome;
 
     @NotNull(message = "Valor é obrigatório!")
-    private EnderecoDTO endereco;
+    private Double quantidade;
+
+    @NotNull(message = "Valor é obrigatório!")
+    private IngredienteType tipo;
+
+    @NotBlank(message = "Valor é obrigatório!")
+    private String complemento;
 }

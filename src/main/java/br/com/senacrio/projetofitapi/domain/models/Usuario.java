@@ -2,12 +2,7 @@ package br.com.senacrio.projetofitapi.domain.models;
 
 import br.com.senacrio.projetofitapi.domain.enums.UserStatus;
 import br.com.senacrio.projetofitapi.domain.enums.UserType;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnTransformer;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,6 +19,7 @@ import java.time.LocalDate;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Usuario {
 
+    @NonNull
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -52,7 +48,6 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     private UserStatus status = UserStatus.INATIVO;
 
-    @JsonInclude(Include.NON_NULL)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataNascimento;
 }

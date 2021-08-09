@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @SuperBuilder
 @NoArgsConstructor
@@ -18,12 +17,12 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
-@PrimaryKeyJoinColumn(name = "usuario_id")
-public class Nutricionista extends Usuario implements Serializable {
+@PrimaryKeyJoinColumn(name = "usuario_id", foreignKey = @ForeignKey(name = "fk_usuario_id"))
+public class Nutricionista extends Usuario {
 
     private String crn;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "endereco_id")
+    @JoinColumn(name = "endereco_id", foreignKey = @ForeignKey(name = "fk_endereco_id"))
     private Endereco endereco;
 }

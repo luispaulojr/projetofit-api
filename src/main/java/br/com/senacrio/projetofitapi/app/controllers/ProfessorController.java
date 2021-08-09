@@ -2,9 +2,8 @@ package br.com.senacrio.projetofitapi.app.controllers;
 
 import br.com.senacrio.projetofitapi.config.ExceptionHandlers;
 import br.com.senacrio.projetofitapi.domain.dtos.ProfessorDTO;
-import br.com.senacrio.projetofitapi.domain.models.Academia;
-import br.com.senacrio.projetofitapi.domain.models.Endereco;
 import br.com.senacrio.projetofitapi.domain.models.Professor;
+import br.com.senacrio.projetofitapi.gateway.converts.ProfessorConvert;
 import br.com.senacrio.projetofitapi.gateway.repositories.ProfessorRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -66,7 +65,7 @@ public class ProfessorController {
             @ApiResponse(description = "Falha do sistema", responseCode = "500", content = @Content)
     })
     public ResponseEntity<Professor> addProfessor(@RequestBody @Valid ProfessorDTO professorDTO) {
-        var professor = convertProfessor(professorDTO, Optional.empty());
+        var professor = ProfessorConvert.convertProfessorRequest(professorDTO);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(linkTo(ProfessorController.class).slash(professor.getId())
                 .toUri());
@@ -80,20 +79,6 @@ public class ProfessorController {
         return new ResponseEntity<>(savedProfessor, httpHeaders, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Cadastra professor", responses = {
-            @ApiResponse(description = "Sucesso ao excluir o professor", responseCode = "204", content = @Content),
-            @ApiResponse(description = "Falha ao excluir o professor", responseCode = "400", content = @Content)
-    })
-    public ResponseEntity<Void> deleteProfessor(@PathVariable("id") long id) {
-        try {
-            repository.deleteById(id);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
     @PutMapping("/{id}")
     @Operation(summary = "Atualiza um professor pelo id", responses = {
             @ApiResponse(description = "Sucesso ao atualizar do professor", responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Professor.class))),
@@ -105,36 +90,28 @@ public class ProfessorController {
         if (!isProfessorPresent) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        Professor updatedProfessor = repository.save(convertProfessor(professorDTO, Optional.of(id)));
+
+        var academia = repository.findAcademiaByProfessor(id);
+
+        professorDTO.setId(id);
+        professorDTO.getAcademiaFiliada().setId(academia.getId());
+        professorDTO.getAcademiaFiliada().getEndereco().setId(academia.getEndereco().getId());
+        Professor updatedProfessor = repository.save(ProfessorConvert.convertProfessorUpdateRequest(professorDTO));
 
         return new ResponseEntity<>(updatedProfessor, HttpStatus.OK);
     }
 
-    private Professor convertProfessor(ProfessorDTO professorDTO, Optional<Long> id) {
-        var academia = (id.isPresent() ? repository.findAcademiaByProfessor(id.get()) : null);
-
-        return Professor.builder()
-                .id(id.orElse(null))
-                .nome(professorDTO.getNome())
-                .login(professorDTO.getLogin())
-                .senha(professorDTO.getSenha())
-                .email(professorDTO.getEmail())
-                .telefone(professorDTO.getTelefone())
-                .tipo(professorDTO.getTipo())
-                .status(professorDTO.getStatus())
-                .dataNascimento(professorDTO.getDataNascimento())
-                .cref(professorDTO.getCref())
-                .academiaFiliada(Academia.builder()
-                        .id((id.isPresent() ? academia.getId() : null))
-                        .razaoSocial(professorDTO.getAcademiaFiliada().getRazaoSocial())
-                        .cpnj(professorDTO.getAcademiaFiliada().getCpnj())
-                        .endereco(Endereco.builder()
-                                .id((id.isPresent() ? academia.getEndereco().getId() : null))
-                                .logradouro(professorDTO.getAcademiaFiliada().getEndereco().getLogradouro())
-                                .bairro(professorDTO.getAcademiaFiliada().getEndereco().getBairro())
-                                .cidade(professorDTO.getAcademiaFiliada().getEndereco().getCidade())
-                                .build())
-                        .build())
-                .build();
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Apaga professor", responses = {
+            @ApiResponse(description = "Sucesso ao excluir o professor", responseCode = "204", content = @Content),
+            @ApiResponse(description = "Falha ao excluir o professor", responseCode = "400", content = @Content)
+    })
+    public ResponseEntity<Void> deleteProfessor(@PathVariable("id") long id) {
+        try {
+            repository.deleteById(id);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

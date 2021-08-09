@@ -2,8 +2,8 @@ package br.com.senacrio.projetofitapi.app.controllers;
 
 import br.com.senacrio.projetofitapi.config.ExceptionHandlers;
 import br.com.senacrio.projetofitapi.domain.dtos.NutricionistaDTO;
-import br.com.senacrio.projetofitapi.domain.models.Endereco;
 import br.com.senacrio.projetofitapi.domain.models.Nutricionista;
+import br.com.senacrio.projetofitapi.gateway.converts.NutricionistaConvert;
 import br.com.senacrio.projetofitapi.gateway.repositories.NutricionistaRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -65,7 +65,7 @@ public class NutricionistaController {
             @ApiResponse(description = "Falha do sistema", responseCode = "500", content = @Content)
     })
     public ResponseEntity<Nutricionista> addNutricionista(@RequestBody @Valid NutricionistaDTO nutricionistaDTO) {
-        var nutricionista = convertNutricionista(nutricionistaDTO, Optional.empty());
+        var nutricionista = NutricionistaConvert.convertNutricionistaRequest(nutricionistaDTO);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(linkTo(NutricionistaController.class).slash(nutricionista.getId())
                 .toUri());
@@ -79,20 +79,6 @@ public class NutricionistaController {
         return new ResponseEntity<>(savedNutricionista, httpHeaders, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Cadastra nutricionista", responses = {
-            @ApiResponse(description = "Sucesso ao excluir o nutricionista", responseCode = "204", content = @Content),
-            @ApiResponse(description = "Falha ao excluir o nutricionista", responseCode = "400", content = @Content)
-    })
-    public ResponseEntity<Void> deleteNutricionista(@PathVariable("id") long id) {
-        try {
-            repository.deleteById(id);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
     @PutMapping("/{id}")
     @Operation(summary = "Atualiza um nutricionista pelo id", responses = {
             @ApiResponse(description = "Sucesso ao atualizar do nutricionista", responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Nutricionista.class))),
@@ -104,34 +90,24 @@ public class NutricionistaController {
         if (!isNutricionistaPresent) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        Nutricionista updatedNutricionista = repository.save(convertNutricionista(nutricionistaDTO, Optional.of(id)));
+        nutricionistaDTO.setId(id);
+        nutricionistaDTO.getConsultorio().setId(repository.findIdConsultorioByNutricionista(id));
+        Nutricionista updatedNutricionista = repository.save(NutricionistaConvert.convertNutricionistaUpdateRequest(nutricionistaDTO));
 
         return new ResponseEntity<>(updatedNutricionista, HttpStatus.OK);
     }
 
-    private Nutricionista convertNutricionista(NutricionistaDTO nutricionistaDTO, Optional<Long> id) {
-
-        var nutricionista = Nutricionista.builder()
-                .id(id.orElse(null))
-                .nome(nutricionistaDTO.getNome())
-                .login(nutricionistaDTO.getLogin())
-                .senha(nutricionistaDTO.getSenha())
-                .email(nutricionistaDTO.getEmail())
-                .telefone(nutricionistaDTO.getTelefone())
-                .tipo(nutricionistaDTO.getTipo())
-                .status(nutricionistaDTO.getStatus())
-                .dataNascimento(nutricionistaDTO.getDataNascimento())
-                .crn(nutricionistaDTO.getCrn())
-                .endereco(
-                        Endereco.builder()
-                                .id((id.isPresent() ? repository.findIdConsultorioByNutricionista(id.get()) : null))
-                                .logradouro(nutricionistaDTO.getConsultorio().getLogradouro())
-                                .bairro(nutricionistaDTO.getConsultorio().getBairro())
-                                .cidade(nutricionistaDTO.getConsultorio().getCidade())
-                                .build())
-                .build();
-        System.out.println(nutricionista);
-
-        return nutricionista;
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Apaga nutricionista", responses = {
+            @ApiResponse(description = "Sucesso ao excluir o nutricionista", responseCode = "204", content = @Content),
+            @ApiResponse(description = "Falha ao excluir o nutricionista", responseCode = "400", content = @Content)
+    })
+    public ResponseEntity<Void> deleteNutricionista(@PathVariable("id") long id) {
+        try {
+            repository.deleteById(id);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

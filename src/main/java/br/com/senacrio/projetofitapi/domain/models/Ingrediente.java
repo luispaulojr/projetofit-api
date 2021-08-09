@@ -1,5 +1,6 @@
 package br.com.senacrio.projetofitapi.domain.models;
 
+import br.com.senacrio.projetofitapi.domain.enums.IngredienteType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,18 +13,21 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Data
 @Entity
-public class Academia {
+public class Ingrediente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String razaoSocial;
+    @Column(nullable = false)
+    private String nome;
 
-    @Column(unique = true, nullable = false)
-    private String cpnj;
+    @Column(nullable = false)
+    private Double quantidade;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "endereco_id", foreignKey = @ForeignKey(name = "fk_endereco_id"))
-    private Endereco endereco;
+    @Column(nullable = false)
+    private IngredienteType tipo;
+
+    @Column(nullable = false)
+    private String complemento;
 }

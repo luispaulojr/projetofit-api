@@ -5,22 +5,23 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity
-public class Endereco {
+public class Foto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String logradouro;
-    private String bairro;
-    private String cidade;
+
+    @Column(columnDefinition = "TEXT")
+    private String strFoto;
+
+    @Column(name = "postagem_at", columnDefinition = "TIMESTAMP")
+    private LocalDateTime postagemAT;
 }

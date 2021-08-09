@@ -1,6 +1,6 @@
 package br.com.senacrio.projetofitapi.domain.models;
 
-import br.com.senacrio.projetofitapi.domain.enums.IngredienteType;
+import br.com.senacrio.projetofitapi.domain.enums.UnidadeMedidaType;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,7 +24,7 @@ public class Ingrediente {
     private Double quantidade;
 
     @Column(nullable = false)
-    private IngredienteType tipo;
+    private UnidadeMedidaType tipo;
 
     @Column(nullable = false)
     private String complemento;

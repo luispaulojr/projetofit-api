@@ -1,6 +1,6 @@
 package br.com.senacrio.projetofitapi.domain.dtos;
 
-import br.com.senacrio.projetofitapi.domain.enums.IngredienteType;
+import br.com.senacrio.projetofitapi.domain.enums.UnidadeMedidaType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,7 +26,7 @@ public class IngredienteDTO {
     private Double quantidade;
 
     @NotNull(message = "Valor é obrigatório!")
-    private IngredienteType tipo;
+    private UnidadeMedidaType tipo;
 
     @NotBlank(message = "Valor é obrigatório!")
     private String complemento;

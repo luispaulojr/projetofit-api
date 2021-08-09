@@ -1,6 +1,6 @@
 package br.com.senacrio.projetofitapi.domain.enums;
 
-public enum IngredienteType {
+public enum UnidadeMedidaType {
     LITRO,
     GRAMA,
     QUILOGRAMA,

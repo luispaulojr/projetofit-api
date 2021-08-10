@@ -10,8 +10,6 @@ import lombok.ToString;
 import javax.validation.constraints.NotBlank;
 
 @ToString
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
 public class EnderecoDTO {
 

@@ -10,8 +10,6 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @ToString
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
 public class TreinoDTO {
 

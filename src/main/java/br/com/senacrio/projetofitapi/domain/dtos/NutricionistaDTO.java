@@ -17,8 +17,6 @@ import javax.validation.constraints.Past;
 import java.time.LocalDate;
 
 @ToString
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
 public class NutricionistaDTO {
 

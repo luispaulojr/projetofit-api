@@ -15,8 +15,6 @@ import java.time.LocalDate;
 
 @Builder
 @ToString
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
 public class AlunoDTO {
 

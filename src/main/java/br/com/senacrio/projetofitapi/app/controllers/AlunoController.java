@@ -95,7 +95,7 @@ public class AlunoController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         alunoDTO.setId(id);
-        Aluno updatedAluno = repository.save(AlunoConverter.toAlunoUpdateRequest(alunoDTO));
+        var updatedAluno = repository.save(AlunoConverter.toAlunoUpdateRequest(alunoDTO));
 
         return new ResponseEntity<>(updatedAluno, HttpStatus.OK);
     }

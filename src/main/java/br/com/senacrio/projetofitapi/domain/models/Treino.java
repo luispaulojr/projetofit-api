@@ -29,6 +29,6 @@ public class Treino {
     @Column(nullable = false)
     @Singular("SerieDeExercicios")
     @OneToMany
-    @JoinColumn(name = "serieDeExerciciosList_id", foreignKey = @ForeignKey(name = "fk_serie_de_exercicios_id"))
+    @JoinColumn(name = "serie_de_exercicios_id", foreignKey = @ForeignKey(name = "fk_serie_de_exercicios_id"))
     private List<SerieDeExercicios> serieDeExerciciosList;
 }

@@ -96,7 +96,7 @@ public class ReceitaController {
 
         receitaDTO.setId(id);
 
-        Receita updatedReceita = repository.save(ReceitaConverter.toReceitaUpdateRequest(receitaDTO));
+        var updatedReceita = repository.save(ReceitaConverter.toReceitaUpdateRequest(receitaDTO));
 
         return new ResponseEntity<>(updatedReceita, HttpStatus.OK);
     }

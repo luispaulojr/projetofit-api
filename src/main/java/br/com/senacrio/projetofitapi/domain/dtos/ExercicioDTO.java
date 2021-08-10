@@ -10,8 +10,6 @@ import java.util.List;
 
 @Builder
 @ToString
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
 public class ExercicioDTO {
 

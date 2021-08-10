@@ -98,7 +98,7 @@ public class ProfessorController {
         professorDTO.setId(id);
         professorDTO.getAcademiaFiliada().setId(academia.getId());
         professorDTO.getAcademiaFiliada().getEndereco().setId(academia.getEndereco().getId());
-        Professor updatedProfessor = repository.save(ProfessorConverter.toProfessorUpdateRequest(professorDTO));
+        var updatedProfessor = repository.save(ProfessorConverter.toProfessorUpdateRequest(professorDTO));
 
         return new ResponseEntity<>(updatedProfessor, HttpStatus.OK);
     }

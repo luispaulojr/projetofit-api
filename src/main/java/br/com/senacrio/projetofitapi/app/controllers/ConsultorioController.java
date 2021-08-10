@@ -96,7 +96,7 @@ public class ConsultorioController {
         }
 
         consultorioDTO.setId(id);
-        Consultorio updatedConsultorio = repository.save(ConsultorioConverter.toConsultorioUpdateRequest(consultorioDTO));
+        var updatedConsultorio = repository.save(ConsultorioConverter.toConsultorioUpdateRequest(consultorioDTO));
 
         return new ResponseEntity<>(updatedConsultorio, HttpStatus.OK);
     }

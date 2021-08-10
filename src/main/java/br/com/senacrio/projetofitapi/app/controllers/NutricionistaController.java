@@ -96,7 +96,7 @@ public class NutricionistaController {
         nutricionistaDTO.setId(id);
         nutricionistaDTO.getConsultorio().setId(repository.findIdConsultorioByNutricionista(id));
 
-        Nutricionista updatedNutricionista = repository.save(NutricionistaConverter.toNutricionistaUpdateRequest(nutricionistaDTO));
+        var updatedNutricionista = repository.save(NutricionistaConverter.toNutricionistaUpdateRequest(nutricionistaDTO));
 
         return new ResponseEntity<>(updatedNutricionista, HttpStatus.OK);
     }

@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @ToString
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
 public class FotoDTO {
 

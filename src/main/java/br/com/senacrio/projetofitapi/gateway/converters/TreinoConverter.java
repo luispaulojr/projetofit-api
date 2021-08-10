@@ -26,7 +26,7 @@ public class TreinoConverter {
 
         return Treino.builder()
                 .id(dto.getId())
-                .aluno(Aluno.builder().id(dto.getProfessorId()).build())
+                .aluno(Aluno.builder().id(dto.getAlunoId()).build())
                 .professor(Professor.builder().id(dto.getProfessorId()).build())
                 .serieDeExerciciosList(serieList)
                 .build();

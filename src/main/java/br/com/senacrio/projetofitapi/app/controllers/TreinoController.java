@@ -96,7 +96,7 @@ public class TreinoController {
         }
 
         treinoDTO.setId(id);
-        Treino updatedTreino = repository.save(TreinoConverter.toTreinoUpdateRequest(treinoDTO));
+        var updatedTreino = repository.save(TreinoConverter.toTreinoUpdateRequest(treinoDTO));
 
         return new ResponseEntity<>(updatedTreino, HttpStatus.OK);
     }

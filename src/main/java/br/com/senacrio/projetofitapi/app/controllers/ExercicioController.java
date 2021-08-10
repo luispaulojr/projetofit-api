@@ -95,7 +95,7 @@ public class ExercicioController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         exercicioDTO.setId(id);
-        Exercicio updatedExercicio = repository.save(ExercicioConverter.toExercicioUpdateRequest(exercicioDTO));
+        var updatedExercicio = repository.save(ExercicioConverter.toExercicioUpdateRequest(exercicioDTO));
 
         return new ResponseEntity<>(updatedExercicio, HttpStatus.OK);
     }

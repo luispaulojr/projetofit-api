@@ -95,7 +95,7 @@ public class SerieDeExerciciosController {
 
         serieDeExerciciosDTO.setId(id);
 
-        SerieDeExercicios updatedSerieDeExercicios = repository.save(SerieDeExerciciosConverter.toSerieDeExerciciosUpdateRequest(serieDeExerciciosDTO));
+        var updatedSerieDeExercicios = repository.save(SerieDeExerciciosConverter.toSerieDeExerciciosUpdateRequest(serieDeExerciciosDTO));
 
         return new ResponseEntity<>(updatedSerieDeExercicios, HttpStatus.OK);
     }

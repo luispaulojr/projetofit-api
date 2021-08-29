@@ -4,12 +4,13 @@ import br.com.senacrio.projetofitapi.domain.enums.UserStatus;
 import br.com.senacrio.projetofitapi.domain.enums.UserType;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.ColumnTransformer;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @ToString
 @SuperBuilder
@@ -30,7 +31,6 @@ public class Usuario {
     @Column(unique = true)
     private String login;
 
-    @ColumnTransformer(read = "md5(senha)", write = "md5(?)")
     private String senha;
 
     @Column(unique = true)
@@ -50,4 +50,8 @@ public class Usuario {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataNascimento;
+
+    @Column(name="created_at")
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 }

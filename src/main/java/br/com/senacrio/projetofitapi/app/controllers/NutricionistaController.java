@@ -1,6 +1,7 @@
 package br.com.senacrio.projetofitapi.app.controllers;
 
 import br.com.senacrio.projetofitapi.config.ExceptionHandlers;
+import br.com.senacrio.projetofitapi.config.utils.GeneratedSecuredPassword;
 import br.com.senacrio.projetofitapi.domain.dtos.NutricionistaDTO;
 import br.com.senacrio.projetofitapi.domain.models.Nutricionista;
 import br.com.senacrio.projetofitapi.gateway.converters.NutricionistaConverter;
@@ -66,6 +67,7 @@ public class NutricionistaController {
     })
     public ResponseEntity<Nutricionista> addNutricionista(@RequestBody @Valid NutricionistaDTO nutricionistaDTO) {
 
+        nutricionistaDTO.setSenha(GeneratedSecuredPassword.hash(nutricionistaDTO.getSenha()));
         var nutricionista = NutricionistaConverter.toNutricionistaRequest(nutricionistaDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();

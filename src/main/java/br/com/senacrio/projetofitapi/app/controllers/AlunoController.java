@@ -1,6 +1,7 @@
 package br.com.senacrio.projetofitapi.app.controllers;
 
 import br.com.senacrio.projetofitapi.config.ExceptionHandlers;
+import br.com.senacrio.projetofitapi.config.utils.GeneratedSecuredPassword;
 import br.com.senacrio.projetofitapi.domain.dtos.AlunoDTO;
 import br.com.senacrio.projetofitapi.domain.models.Aluno;
 import br.com.senacrio.projetofitapi.gateway.converters.AlunoConverter;
@@ -66,6 +67,7 @@ public class AlunoController {
     })
     public ResponseEntity<Aluno> addAluno(@RequestBody @Valid AlunoDTO alunoDTO) {
 
+        alunoDTO.setSenha(GeneratedSecuredPassword.hash(alunoDTO.getSenha()));
         var aluno = AlunoConverter.toAlunoRequest(alunoDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();

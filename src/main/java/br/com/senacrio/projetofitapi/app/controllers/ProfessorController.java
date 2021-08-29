@@ -1,6 +1,7 @@
 package br.com.senacrio.projetofitapi.app.controllers;
 
 import br.com.senacrio.projetofitapi.config.ExceptionHandlers;
+import br.com.senacrio.projetofitapi.config.utils.GeneratedSecuredPassword;
 import br.com.senacrio.projetofitapi.domain.dtos.ProfessorDTO;
 import br.com.senacrio.projetofitapi.domain.models.Professor;
 import br.com.senacrio.projetofitapi.gateway.converters.ProfessorConverter;
@@ -66,6 +67,7 @@ public class ProfessorController {
     })
     public ResponseEntity<Professor> addProfessor(@RequestBody @Valid ProfessorDTO professorDTO) {
 
+        professorDTO.setSenha(GeneratedSecuredPassword.hash(professorDTO.getSenha()));
         var professor = ProfessorConverter.toProfessorRequest(professorDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();

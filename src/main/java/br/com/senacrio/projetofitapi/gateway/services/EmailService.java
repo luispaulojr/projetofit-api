@@ -21,17 +21,32 @@ public class EmailService {
         this.userDetailsService = userDetailsService;
     }
 
+    public void sendmailConfirmUser(Usuario usuario) {
+        var subject = "Cadastro novo usuário";
+        var text = "Seja bem vindo ao Projetofit!!!\nPara continuar acesse: http://localhost/api/active?token=" + this.generateToken(usuario);
 
-    public void sendSimpleMessage(Usuario usuario) {
+        this.sendSimpleMessage(usuario.getEmail(), subject, text);
+    }
+
+    public void sendmailConfirmedUser(Usuario usuario) {
+        var subject = "Ativação de usuário";
+        var text = "Usuário ativado com sucesso!\nAgora você pode desfrutar dos recursos desse excelente app\n\nSeja bem vindo ao Projetofit!!!\n";
+
+        sendSimpleMessage(usuario.getEmail(), subject, text);
+        System.out.println("Email enviado para: " + usuario.getEmail());
+    }
+
+    private void sendSimpleMessage(String to, String subject, String text) {
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("noreply@projetofit.com");
-        message.setTo(usuario.getEmail());
-        message.setSubject("Cadastro novo usuário");
-        message.setText("Seja bem vindo ao Projetofit!!!\nPara continuar acesse: http://localhost/active?token=" + this.generateToken(usuario));
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(text);
         emailSender.send(message);
-        System.out.println("Email enviado para: " + usuario.getEmail());
+        System.out.println("Email enviado para: " + to);
     }
+
 
     private String generateToken(Usuario usuario) {
         var user = this.converterToUser(usuario);

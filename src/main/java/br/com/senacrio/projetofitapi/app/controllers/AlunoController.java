@@ -81,7 +81,7 @@ public class AlunoController {
 
         try {
             savedAluno = repository.save(aluno);
-            this.emailService.sendSimpleMessage(savedAluno);
+            this.emailService.sendmailConfirmUser(savedAluno);
         } catch (Exception e) {
             return ExceptionHandlers.trataException(e.getMessage());
         }

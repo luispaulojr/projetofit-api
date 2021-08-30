@@ -6,6 +6,7 @@ import br.com.senacrio.projetofitapi.domain.dtos.NutricionistaDTO;
 import br.com.senacrio.projetofitapi.domain.models.Nutricionista;
 import br.com.senacrio.projetofitapi.gateway.converters.NutricionistaConverter;
 import br.com.senacrio.projetofitapi.gateway.repositories.NutricionistaRepository;
+import br.com.senacrio.projetofitapi.gateway.services.EmailService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -29,9 +30,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 public class NutricionistaController {
 
     private final NutricionistaRepository repository;
+    private final EmailService emailService;
 
-    public NutricionistaController(NutricionistaRepository repository) {
+    public NutricionistaController(NutricionistaRepository repository, EmailService emailService) {
         this.repository = repository;
+        this.emailService = emailService;
     }
 
     @GetMapping
@@ -76,6 +79,7 @@ public class NutricionistaController {
         Nutricionista savedNutricionista;
         try {
             savedNutricionista = repository.save(nutricionista);
+            this.emailService.sendmailConfirmUser(savedNutricionista);
         } catch (Exception e) {
             return ExceptionHandlers.trataException(e.getMessage());
         }

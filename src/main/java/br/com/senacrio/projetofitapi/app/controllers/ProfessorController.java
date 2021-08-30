@@ -6,6 +6,7 @@ import br.com.senacrio.projetofitapi.domain.dtos.ProfessorDTO;
 import br.com.senacrio.projetofitapi.domain.models.Professor;
 import br.com.senacrio.projetofitapi.gateway.converters.ProfessorConverter;
 import br.com.senacrio.projetofitapi.gateway.repositories.ProfessorRepository;
+import br.com.senacrio.projetofitapi.gateway.services.EmailService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -29,9 +30,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 public class ProfessorController {
 
     private final ProfessorRepository repository;
+    private final EmailService emailService;
 
-    public ProfessorController(ProfessorRepository repository) {
+    public ProfessorController(ProfessorRepository repository, EmailService emailService) {
         this.repository = repository;
+        this.emailService = emailService;
     }
 
     @GetMapping
@@ -76,6 +79,7 @@ public class ProfessorController {
         Professor savedProfessor;
         try {
             savedProfessor = repository.save(professor);
+            this.emailService.sendmailConfirmUser(savedProfessor);
         } catch (Exception e) {
             return ExceptionHandlers.trataException(e.getMessage());
         }

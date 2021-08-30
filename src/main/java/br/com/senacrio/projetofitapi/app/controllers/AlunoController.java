@@ -6,6 +6,7 @@ import br.com.senacrio.projetofitapi.domain.dtos.AlunoDTO;
 import br.com.senacrio.projetofitapi.domain.models.Aluno;
 import br.com.senacrio.projetofitapi.gateway.converters.AlunoConverter;
 import br.com.senacrio.projetofitapi.gateway.repositories.AlunoRepository;
+import br.com.senacrio.projetofitapi.gateway.services.EmailService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -29,9 +30,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 public class AlunoController {
 
     private final AlunoRepository repository;
+    private final EmailService emailService;
 
-    public AlunoController(AlunoRepository repository) {
+    public AlunoController(AlunoRepository repository, EmailService emailService) {
         this.repository = repository;
+        this.emailService = emailService;
     }
 
     @GetMapping
@@ -78,6 +81,7 @@ public class AlunoController {
 
         try {
             savedAluno = repository.save(aluno);
+            this.emailService.sendSimpleMessage(savedAluno);
         } catch (Exception e) {
             return ExceptionHandlers.trataException(e.getMessage());
         }

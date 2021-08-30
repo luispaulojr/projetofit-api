@@ -6,6 +6,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 public interface UsuarioRepository extends PagingAndSortingRepository<Usuario, Long> {
-    @Query("select u from Usuario u where u.email = :email")
-    Usuario findByEmail(@Param("email") String email);
+    @Query("select u from Usuario u where u.login = :login and u.status = 'ATIVO'")
+    Usuario findByLogin(@Param("login") String login);
 }

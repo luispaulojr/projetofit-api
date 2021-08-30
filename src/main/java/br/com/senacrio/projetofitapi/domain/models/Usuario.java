@@ -33,11 +33,9 @@ public class Usuario {
 
     private String senha;
 
-    @Column(unique = true)
     @Pattern(regexp = ".+@.+\\.[a-z]+", message = "Email fora do Padrao")
     private String email;
 
-    @Column(unique = true)
     private String telefone;
 
     @Builder.Default

@@ -48,6 +48,15 @@ public class JwtAuthenticationController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
+    @RequestMapping(value = "/api/active", method = RequestMethod.POST)
+    public ResponseEntity<?> activeUserWithToken(@RequestBody String token) throws Exception {
+        activeUser(token);
+        return ResponseEntity.ok("");
+    }
+
+    private void activeUser(String token) {
+    }
+
     private void authenticate(String username, String password) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));

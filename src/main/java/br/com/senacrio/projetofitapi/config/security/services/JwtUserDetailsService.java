@@ -1,5 +1,6 @@
 package br.com.senacrio.projetofitapi.config.security.services;
 
+import br.com.senacrio.projetofitapi.domain.models.Usuario;
 import br.com.senacrio.projetofitapi.gateway.repositories.UsuarioRepository;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,14 +20,18 @@ public class JwtUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        var user = this.repository.findByEmail(email);
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        var user = this.repository.findByLogin(login);
 
-        if (user.getEmail().equals(email)) {
-            return new User(email, user.getSenha(),
+        if (user.getLogin().equals(login)) {
+            return new User(login, user.getSenha(),
                     new ArrayList<>());
         } else {
-            throw new UsernameNotFoundException("User not found with email: " + email);
+            throw new UsernameNotFoundException("User not found with login: " + login);
         }
+    }
+
+    public UserDetails loadNewUser(Usuario usuario) {
+        return new User(usuario.getLogin(), "", new ArrayList<>());
     }
 }

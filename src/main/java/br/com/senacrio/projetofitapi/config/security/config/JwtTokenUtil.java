@@ -1,5 +1,6 @@
 package br.com.senacrio.projetofitapi.config.security.config;
 
+import br.com.senacrio.projetofitapi.domain.enums.UserType;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -14,7 +15,7 @@ import java.util.function.Function;
 
 @Component
 public class JwtTokenUtil {
-    public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+    public static final long JWT_TOKEN_VALIDITY = 2 * 6 * 6;
 
     @Value("${jwt.secret}")
     private String secret;
@@ -46,8 +47,9 @@ public class JwtTokenUtil {
     }
 
     //gera token para user
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails, UserType userType) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("tipo", userType);
         return doGenerateToken(claims, userDetails.getUsername());
     }
 

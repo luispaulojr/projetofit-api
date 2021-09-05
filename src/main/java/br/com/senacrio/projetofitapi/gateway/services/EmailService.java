@@ -51,7 +51,7 @@ public class EmailService {
     private String generateToken(Usuario usuario) {
         var user = this.converterToUser(usuario);
         final UserDetails userDetails = userDetailsService.loadNewUser(usuario);
-        return jwtTokenUtil.generateToken(userDetails);
+        return jwtTokenUtil.generateToken(userDetails, usuario.getTipo());
     }
 
     private Usuario converterToUser(Usuario usuarioDTO) {

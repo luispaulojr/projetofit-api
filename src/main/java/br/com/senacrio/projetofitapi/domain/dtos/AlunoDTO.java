@@ -1,5 +1,6 @@
 package br.com.senacrio.projetofitapi.domain.dtos;
 
+import br.com.senacrio.projetofitapi.domain.enums.GeneroType;
 import br.com.senacrio.projetofitapi.domain.enums.UserStatus;
 import br.com.senacrio.projetofitapi.domain.enums.UserType;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,6 +24,9 @@ public class AlunoDTO {
 
     @NotBlank(message = "Valor é obrigatório!")
     private String nome;
+
+    @Enumerated(EnumType.STRING)
+    private GeneroType genero;
 
     @NotBlank(message = "Valor é obrigatório!")
     private String login;

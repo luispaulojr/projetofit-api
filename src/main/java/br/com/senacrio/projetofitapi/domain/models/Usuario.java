@@ -1,7 +1,9 @@
 package br.com.senacrio.projetofitapi.domain.models;
 
+import br.com.senacrio.projetofitapi.domain.enums.GeneroType;
 import br.com.senacrio.projetofitapi.domain.enums.UserStatus;
 import br.com.senacrio.projetofitapi.domain.enums.UserType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
@@ -28,9 +30,13 @@ public class Usuario {
     @Column
     private String nome;
 
+    @Column
+    private GeneroType genero;
+
     @Column(unique = true)
     private String login;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String senha;
 
     @Pattern(regexp = ".+@.+\\.[a-z]+", message = "Email fora do Padrao")

@@ -61,6 +61,17 @@ public class AlunoController {
         return aluno.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping(value = "/perfil/{login}")
+    @Operation(summary = "Localiza um aluno pelo login", responses = {
+            @ApiResponse(description = "Sucesso na busca do aluno", responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Aluno.class))),
+            @ApiResponse(description = "Aluno não localizado", responseCode = "404", content = @Content)
+    })
+    public ResponseEntity<Aluno> getAlunoByLogin(@PathVariable("login") String login) {
+
+        Optional<Aluno> aluno = repository.findByLogin(login);
+        return aluno.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @PostMapping
     @Operation(summary = "Cadastra aluno", responses = {
             @ApiResponse(description = "Sucesso no cadastro do aluno", responseCode = "201", content = @Content),
@@ -69,6 +80,8 @@ public class AlunoController {
             @ApiResponse(description = "Falha do sistema", responseCode = "500", content = @Content)
     })
     public ResponseEntity<Aluno> addAluno(@RequestBody @Valid AlunoDTO alunoDTO) {
+
+        System.out.println(alunoDTO.toString());
 
         alunoDTO.setSenha(GeneratedSecuredPassword.hash(alunoDTO.getSenha()));
         var aluno = AlunoConverter.toAlunoRequest(alunoDTO);

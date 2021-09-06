@@ -7,6 +7,7 @@ public class AlunoConverter {
     public static Aluno toAlunoRequest(AlunoDTO dto) {
         return Aluno.builder()
                 .nome(dto.getNome())
+                .genero(dto.getGenero())
                 .login(dto.getLogin())
                 .senha(dto.getSenha())
                 .email(dto.getEmail())
@@ -24,6 +25,7 @@ public class AlunoConverter {
         return Aluno.builder()
                 .id(dto.getId())
                 .nome(dto.getNome())
+                .genero(dto.getGenero())
                 .login(dto.getLogin())
                 .senha(dto.getSenha())
                 .email(dto.getEmail())

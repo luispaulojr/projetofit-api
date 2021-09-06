@@ -10,6 +10,7 @@ public class ProfessorConverter {
 
         return Professor.builder()
                 .nome(dto.getNome())
+                .genero(dto.getGenero())
                 .login(dto.getLogin())
                 .senha(dto.getSenha())
                 .email(dto.getEmail())
@@ -35,6 +36,7 @@ public class ProfessorConverter {
         return Professor.builder()
                 .id(dto.getId())
                 .nome(dto.getNome())
+                .genero(dto.getGenero())
                 .login(dto.getLogin())
                 .senha(dto.getSenha())
                 .email(dto.getEmail())

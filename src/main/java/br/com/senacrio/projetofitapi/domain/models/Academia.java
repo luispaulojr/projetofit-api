@@ -19,7 +19,7 @@ public class Academia {
     private String razaoSocial;
 
     @Column(unique = true, nullable = false)
-    private String cpnj;
+    private String cnpj;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "endereco_id", foreignKey = @ForeignKey(name = "fk_endereco_id"))

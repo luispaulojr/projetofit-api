@@ -2,9 +2,7 @@ package br.com.senacrio.projetofitapi.domain.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
@@ -22,7 +20,7 @@ public class AcademiaDTO {
 
     @NotBlank(message = "Valor é obrigatório!")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String cpnj;
+    private String cnpj;
 
     @NotNull(message = "Valor é obrigatório!")
     private EnderecoDTO endereco;

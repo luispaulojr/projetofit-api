@@ -1,13 +1,13 @@
 package br.com.senacrio.projetofitapi.domain.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalTime;
 import java.util.List;
 
 @ToString
@@ -19,6 +19,13 @@ public class ReceitaDTO {
 
     @NotBlank(message = "Valor é obrigatório!")
     private String nome;
+
+    @NotBlank(message = "Valor é obrigatório!")
+    private String refeicao;
+
+    @NotNull(message = "Valor é obrigatório!")
+    @JsonFormat(pattern = "HH:mm:ss")
+    private LocalTime horario;
 
     @NotBlank(message = "Valor é obrigatório!")
     private String objetivo;

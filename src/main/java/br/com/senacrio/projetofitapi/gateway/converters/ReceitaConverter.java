@@ -12,6 +12,8 @@ public class ReceitaConverter {
 
         return Receita.builder()
                 .nome(dto.getNome())
+                .refeicao(dto.getRefeicao())
+                .horario(dto.getHorario())
                 .objetivo(dto.getObjetivo())
                 .preparo(dto.getPreparo())
                 .ingredientes(ingredientes)
@@ -26,6 +28,8 @@ public class ReceitaConverter {
         return Receita.builder()
                 .id(dto.getId())
                 .nome(dto.getNome())
+                .refeicao(dto.getRefeicao())
+                .horario(dto.getHorario())
                 .objetivo(dto.getObjetivo())
                 .preparo(dto.getPreparo())
                 .ingredientes(ingredientes)

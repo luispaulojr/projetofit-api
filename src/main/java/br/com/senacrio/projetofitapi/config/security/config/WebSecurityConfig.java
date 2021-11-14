@@ -58,10 +58,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+
+
         httpSecurity.csrf().disable()
 // Não cheque essas requisições
                 .authorizeRequests()
-                .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger", "/swagger-ui/**","/swagger-resources/**", "/configuration/**", "/swagger-ui.html", "/webjars/**").permitAll()
+                .antMatchers("/v2/api-docs", "/configuration/ui", "/swagger", "/api-docs/**", "/swagger-ui/*", "/swagger-ui/**","/swagger-resources/**", "/configuration/**", "/swagger-ui.html", "/webjars/**", "/actuator/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/active").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/authenticate").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/aluno").permitAll()

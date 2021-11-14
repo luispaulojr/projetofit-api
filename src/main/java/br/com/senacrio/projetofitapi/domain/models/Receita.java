@@ -3,6 +3,7 @@ package br.com.senacrio.projetofitapi.domain.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 import java.util.List;
 
 @ToString
@@ -19,6 +20,12 @@ public class Receita {
 
     @Column(nullable = false)
     private String nome;
+
+    @Column(nullable = false)
+    private String refeicao;
+
+    @Column(nullable = false)
+    private LocalTime horario;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String objetivo;

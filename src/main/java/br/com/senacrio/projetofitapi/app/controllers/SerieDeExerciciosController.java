@@ -2,8 +2,10 @@ package br.com.senacrio.projetofitapi.app.controllers;
 
 import br.com.senacrio.projetofitapi.config.ExceptionHandlers;
 import br.com.senacrio.projetofitapi.domain.dtos.SerieDeExerciciosDTO;
+import br.com.senacrio.projetofitapi.domain.models.Exercicio;
 import br.com.senacrio.projetofitapi.domain.models.SerieDeExercicios;
 import br.com.senacrio.projetofitapi.gateway.converters.SerieDeExerciciosConverter;
+import br.com.senacrio.projetofitapi.gateway.repositories.ExercicioRepository;
 import br.com.senacrio.projetofitapi.gateway.repositories.SerieDeExerciciosRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -28,9 +30,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 public class SerieDeExerciciosController {
 
     private final SerieDeExerciciosRepository repository;
+    private final ExercicioRepository exerciciosRepository;
 
-    public SerieDeExerciciosController(SerieDeExerciciosRepository repository) {
+    public SerieDeExerciciosController(SerieDeExerciciosRepository repository, ExercicioRepository exerciciosRepository) {
         this.repository = repository;
+        this.exerciciosRepository = exerciciosRepository;
     }
 
     @GetMapping
@@ -81,9 +85,35 @@ public class SerieDeExerciciosController {
         return new ResponseEntity<>(savedSerieDeExercicios, httpHeaders, HttpStatus.CREATED);
     }
 
+    @PutMapping("/{idSerie}/{idExercicio}")
+    @Operation(summary = "Adiciona um exercício a série pelo id", responses = {
+            @ApiResponse(description = "Sucesso ao vincular o exercício a série de exercícios", responseCode = "204", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SerieDeExercicios.class))),
+            @ApiResponse(description = "Exercícios não vinculado", responseCode = "404", content = @Content)
+    })
+    public ResponseEntity<SerieDeExercicios> addExercicioSerie(@PathVariable("idSerie") long idSerie, @PathVariable("idExercicio") long idExercicio) {
+
+        boolean isSerieDeExerciciosPresent = repository.existsById(idSerie);
+        if (!isSerieDeExerciciosPresent) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        boolean isExerciciosPresent = exerciciosRepository.existsById(idExercicio);
+        if (!isExerciciosPresent) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        var serieDeExercicios = repository.findById(idSerie).get();
+        serieDeExercicios.getExercicios().add(Exercicio.builder().id(idExercicio).build());
+
+        var updatedSerieDeExercicios = repository.save(serieDeExercicios);
+
+        return new ResponseEntity<>(updatedSerieDeExercicios, HttpStatus.NO_CONTENT);
+    }
+
+
     @PutMapping("/{id}")
     @Operation(summary = "Atualiza um série de exercícios pelo id", responses = {
-            @ApiResponse(description = "Sucesso ao atualizar a série de exercícios", responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SerieDeExercicios.class))),
+            @ApiResponse(description = "Sucesso ao atualizar a série de exercícios", responseCode = "204", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SerieDeExercicios.class))),
             @ApiResponse(description = "série de exercícios não localizada", responseCode = "404", content = @Content)
     })
     public ResponseEntity<SerieDeExercicios> updateSerieDeExercicios(@PathVariable("id") long id, @RequestBody SerieDeExerciciosDTO serieDeExerciciosDTO) {
@@ -97,8 +127,10 @@ public class SerieDeExerciciosController {
 
         var updatedSerieDeExercicios = repository.save(SerieDeExerciciosConverter.toSerieDeExerciciosUpdateRequest(serieDeExerciciosDTO));
 
-        return new ResponseEntity<>(updatedSerieDeExercicios, HttpStatus.OK);
+        return new ResponseEntity<>(updatedSerieDeExercicios, HttpStatus.NO_CONTENT);
     }
+
+
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Apaga série de exercícios", responses = {
